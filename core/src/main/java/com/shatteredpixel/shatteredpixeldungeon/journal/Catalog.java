@@ -93,6 +93,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.AssassinsBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BattleAxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ChainWhip;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dagger;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Dirk;
@@ -179,6 +180,7 @@ public enum Catalog {
 		WEAPONS.seen.put( Greataxe.class,                   false);
 		WEAPONS.seen.put( Greatshield.class,                false);
 		WEAPONS.seen.put( Gauntlet.class,                   false);
+		WEAPONS.seen.put( ChainWhip.class,                  false);
 	
 		ARMOR.seen.put( ClothArmor.class,                   false);
 		ARMOR.seen.put( LeatherArmor.class,                 false);

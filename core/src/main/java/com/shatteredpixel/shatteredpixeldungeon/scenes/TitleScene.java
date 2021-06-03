@@ -131,7 +131,7 @@ public class TitleScene extends PixelScene {
 		add(btnPlay);
 
 		StyledButton btnSupport = new SupportButton(GREY_TR, Messages.get(this, "support"));
-		add(btnSupport);
+		//add(btnSupport);
 
 		StyledButton btnRankings = new StyledButton(GREY_TR,Messages.get(this, "rankings")){
 			@Override
@@ -153,7 +153,7 @@ public class TitleScene extends PixelScene {
 
 		StyledButton btnNews = new NewsButton(GREY_TR, Messages.get(this, "news"));
 		btnNews.icon(Icons.get(Icons.NEWS));
-		add(btnNews);
+		//add(btnNews);
 
 		StyledButton btnChanges = new ChangesButton(GREY_TR, Messages.get(this, "changes"));
 		btnChanges.icon(Icons.get(Icons.CHANGES));
@@ -180,7 +180,7 @@ public class TitleScene extends PixelScene {
 			btnPlay.setRect(title.x-50, topRegion+GAP, ((title.width()+100)/2)-1, BTN_HEIGHT);
 			align(btnPlay);
 			btnSupport.setRect(btnPlay.right()+2, btnPlay.top(), btnPlay.width(), BTN_HEIGHT);
-			btnRankings.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, (btnPlay.width()*.67f)-1, BTN_HEIGHT);
+			btnRankings.setRect(btnPlay.left(), btnNews.bottom() + GAP, (btnPlay.width()*.67f)-1, BTN_HEIGHT);
 			btnBadges.setRect(btnRankings.left(), btnRankings.bottom()+GAP, btnRankings.width(), BTN_HEIGHT);
 			btnNews.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
 			btnChanges.setRect(btnNews.left(), btnNews.bottom() + GAP, btnRankings.width(), BTN_HEIGHT);
@@ -191,8 +191,9 @@ public class TitleScene extends PixelScene {
 			align(btnPlay);
 			btnSupport.setRect(btnPlay.left(), btnPlay.bottom()+ GAP, btnPlay.width(), BTN_HEIGHT);
 			btnRankings.setRect(btnPlay.left(), btnSupport.bottom()+ GAP, (btnPlay.width()/2)-1, BTN_HEIGHT);
-			btnBadges.setRect(btnRankings.right()+2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
+			btnBadges.setRect((w - btnRankings.width()) / 2, btnRankings.top(), btnRankings.width(), BTN_HEIGHT);
 			btnNews.setRect(btnRankings.left(), btnRankings.bottom()+ GAP, btnRankings.width(), BTN_HEIGHT);
+			btnRankings.setPos(btnNews.left(), btnNews.top());
 			btnChanges.setRect(btnNews.right()+2, btnNews.top(), btnNews.width(), BTN_HEIGHT);
 			btnSettings.setRect(btnNews.left(), btnNews.bottom()+GAP, btnRankings.width(), BTN_HEIGHT);
 			btnAbout.setRect(btnSettings.right()+2, btnSettings.top(), btnSettings.width(), BTN_HEIGHT);

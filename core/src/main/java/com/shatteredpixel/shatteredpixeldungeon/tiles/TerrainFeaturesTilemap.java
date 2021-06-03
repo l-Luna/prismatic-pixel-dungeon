@@ -67,13 +67,13 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 		int stage = (Dungeon.depth-1)/5;
 		if (Dungeon.depth == 21 && Dungeon.level instanceof LastShopLevel) stage--;
 		if (tile == Terrain.HIGH_GRASS){
-			return 9 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
+			return 10 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		} else if (tile == Terrain.FURROWED_GRASS){
-			return 11 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
+			return 12 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		} else if (tile == Terrain.GRASS) {
-			return 13 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
+			return 14 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		} else if (tile == Terrain.EMBERS) {
-			return 9 * (16*5) + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
+			return 10 * (16*5) + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);
 		}
 
 		return -1;

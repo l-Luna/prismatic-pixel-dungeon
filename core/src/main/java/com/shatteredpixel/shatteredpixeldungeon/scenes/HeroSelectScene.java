@@ -69,6 +69,7 @@ public class HeroSelectScene extends PixelScene {
 	private StyledButton startBtn;
 	private IconButton infoButton;
 	private IconButton challengeButton;
+	private IconButton creativeButton;
 	private IconButton btnExit;
 
 	@Override
@@ -193,11 +194,23 @@ public class HeroSelectScene extends PixelScene {
 		challengeButton.setRect(heroBtnleft + 16, Camera.main.height-HeroBtn.HEIGHT-16, 21, 21);
 		challengeButton.visible = false;
 
+		creativeButton = new IconButton(Icons.get(SPDSettings.creative() ? Icons.CREATIVE_ON : Icons.CREATIVE_OFF)){
+			@Override
+			protected void onClick() {
+				SPDSettings.creative(!SPDSettings.creative());
+				icon(Icons.get(SPDSettings.creative() ? Icons.CREATIVE_ON : Icons.CREATIVE_OFF));
+			}
+		};
+		creativeButton.setRect(heroBtnleft + 8, Camera.main.height-HeroBtn.HEIGHT-16, 18, 21);
+		creativeButton.visible = false;
+
 		if (DeviceCompat.isDebug() || Badges.isUnlocked(Badges.Badge.VICTORY)){
 			add(challengeButton);
+			add(creativeButton);
 		} else {
 			Dungeon.challenges = 0;
 			SPDSettings.challenges(0);
+			SPDSettings.creative(false);
 		}
 
 		btnExit = new ExitButton();
@@ -242,7 +255,12 @@ public class HeroSelectScene extends PixelScene {
 		infoButton.setPos(startBtn.right(), startBtn.top());
 
 		challengeButton.visible = true;
-		challengeButton.setPos(startBtn.left()-challengeButton.width(), startBtn.top());
+		challengeButton.setPos(startBtn.left() - challengeButton.width(), startBtn.top());
+
+		creativeButton.visible = true;
+		creativeButton.setPos(challengeButton.left() - creativeButton.width(), startBtn.top());
+		SPDSettings.creative(false);
+		creativeButton.icon(Icons.get(SPDSettings.creative() ? Icons.CREATIVE_ON : Icons.CREATIVE_OFF));
 	}
 
 	private float uiAlpha;
@@ -267,6 +285,7 @@ public class HeroSelectScene extends PixelScene {
 			btnExit.icon().alpha(alpha);
 			challengeButton.icon().alpha(alpha);
 			infoButton.icon().alpha(alpha);
+			creativeButton.icon().alpha(alpha);
 		}
 	}
 

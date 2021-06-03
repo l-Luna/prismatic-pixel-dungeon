@@ -273,7 +273,7 @@ public class AndroidPlatformSupport extends PlatformSupport {
 		if (Gdx.files.absolute("/system/fonts/NotoSansCJK-Regular.ttc").exists()) {
 			//typefaces are 0-JP, 1-KR, 2-SC, 3-TC.
 			int typeFace;
-			switch (SPDSettings.language()) {
+			/*switch (SPDSettings.language()) {
 				case JAPANESE:
 					typeFace = 0;
 					break;
@@ -281,9 +281,9 @@ public class AndroidPlatformSupport extends PlatformSupport {
 					typeFace = 1;
 					break;
 				case CHINESE:
-				default:
+				default:*/
 					typeFace = 2;
-			}
+			//}
 			KRFontGenerator = SCFontGenerator = JPFontGenerator = new FreeTypeFontGenerator(Gdx.files.absolute("/system/fonts/NotoSansCJK-Regular.ttc"), typeFace);
 			
 		//otherwise we have to go over a few possibilities.

@@ -159,6 +159,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_LAST_CLASS	= "last_class";
 	public static final String KEY_CHALLENGES	= "challenges";
 	public static final String KEY_INTRO		= "intro";
+	public static final String KEY_CREATIVE		= "creative";
 
 	public static final String KEY_SUPPORT_NAGGED= "support_nagged";
 	
@@ -184,6 +185,14 @@ public class SPDSettings extends GameSettings {
 	
 	public static int challenges() {
 		return getInt( KEY_CHALLENGES, 0, 0, Challenges.MAX_VALUE );
+	}
+
+	public static void creative( boolean value ){
+		put( KEY_CREATIVE, value );
+	}
+
+	public static boolean creative() {
+		return getBoolean( KEY_CREATIVE, false );
 	}
 
 	public static void supportNagged( boolean value ) {
@@ -261,7 +270,7 @@ public class SPDSettings extends GameSettings {
 	
 	public static boolean systemFont(){
 		return getBoolean(KEY_SYSTEMFONT,
-				(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE));
+				/*(language() == Languages.KOREAN || language() == Languages.CHINESE || language() == Languages.JAPANESE)*/ false);
 	}
 
 	//Connectivity

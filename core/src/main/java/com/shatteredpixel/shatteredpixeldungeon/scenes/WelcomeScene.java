@@ -97,7 +97,8 @@ public class WelcomeScene extends PixelScene {
 			@Override
 			protected void onClick() {
 				super.onClick();
-				if (previousVersion == 0 || SPDSettings.intro()){
+				// TODO: remove when not testing
+				if (/*previousVersion == 0 || SPDSettings.intro()*/false){
 					SPDSettings.version(ShatteredPixelDungeon.versionCode);
 					GamesInProgress.selectedClass = null;
 					GamesInProgress.curSlot = 1;
@@ -197,12 +198,12 @@ public class WelcomeScene extends PixelScene {
 
 		//resetting language preference back to native for finnish speakers if they were on english
 		//This is because Finnish was unmaintained for quite a while
-		if ( previousVersion <= 500
+		/*if ( previousVersion <= 500
 				&& Languages.matchLocale(Locale.getDefault()) == Languages.FINNISH
 				&& Messages.lang() == Languages.ENGLISH) {
 			SPDSettings.language(Languages.FINNISH);
 			Messages.setup(Languages.FINNISH);
-		}
+		}*/
 		
 		SPDSettings.version(ShatteredPixelDungeon.versionCode);
 	}

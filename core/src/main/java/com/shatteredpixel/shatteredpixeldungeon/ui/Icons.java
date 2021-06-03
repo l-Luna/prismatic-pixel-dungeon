@@ -79,6 +79,10 @@ public enum Icons {
 	WATA,
 	WARNING,
 
+	//creative/debug icons
+	CREATIVE_OFF,
+	CREATIVE_ON,
+
 	//32x32 icons for credits
 	ALEKS,
 	CHARLIE,
@@ -218,6 +222,13 @@ public enum Icons {
 			break;
 		case WARNING:
 			icon.frame( icon.texture.uvRect( 34, 81, 48, 95 ) );
+			break;
+
+		case CREATIVE_OFF:
+			icon.frame( icon.texture.uvRect( 49, 81, 63, 88 ) );
+			break;
+		case CREATIVE_ON:
+			icon.frame( icon.texture.uvRect( 63, 81, 77, 88 ) );
 			break;
 
 		//32*32 icons are scaled down to match game's size
