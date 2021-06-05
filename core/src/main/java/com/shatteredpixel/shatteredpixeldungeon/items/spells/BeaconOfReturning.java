@@ -106,7 +106,7 @@ public class BeaconOfReturning extends Spell {
 	}
 	
 	private void returnBeacon( Hero hero ){
-		if (Dungeon.bossLevel()) {
+		if (Dungeon.bossOrPuzzleLevel()) {
 			GLog.w( Messages.get(this, "preventing") );
 			return;
 		}
@@ -141,7 +141,7 @@ public class BeaconOfReturning extends Spell {
 			GameScene.updateFog();
 		} else {
 			
-			Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+			Buff buff = Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
 			if (buff != null) buff.detach();
 			buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
 			if (buff != null) buff.detach();

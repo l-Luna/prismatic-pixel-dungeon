@@ -32,16 +32,16 @@ import com.watabou.utils.Bundle;
 public abstract class Trap implements Bundlable {
 
 	//trap colors
-	public static final int RED      = 0;
-	public static final int ORANGE   = 1;
-	public static final int YELLOW   = 2;
-	public static final int GREEN    = 3;
-	public static final int TEAL     = 4;
-	public static final int VIOLET   = 5;
-	public static final int WHITE    = 6;
-	public static final int GREY     = 7;
-	public static final int BLACK    = 8;
-	public static final int GRADIENT = 9;
+	public static final int RED       = 0;
+	public static final int ORANGE    = 1;
+	public static final int YELLOW    = 2;
+	public static final int GREEN     = 3;
+	public static final int TEAL      = 4;
+	public static final int VIOLET    = 5;
+	public static final int WHITE     = 6;
+	public static final int GREY      = 7;
+	public static final int BLACK     = 8;
+	public static final int BLUESHIFT = 9;
 
 	//trap shapes
 	public static final int DOTS        = 0;

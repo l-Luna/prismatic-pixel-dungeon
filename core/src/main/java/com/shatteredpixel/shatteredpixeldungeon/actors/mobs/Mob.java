@@ -512,7 +512,7 @@ public abstract class Mob extends Char {
 	@Override
 	public void updateSpriteState() {
 		super.updateSpriteState();
-		if (Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class) != null
+		if (Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class) != null
 				|| Dungeon.hero.buff(Swiftthistle.TimeBubble.class) != null)
 			sprite.add( CharSprite.State.PARALYSED );
 	}
@@ -644,7 +644,8 @@ public abstract class Mob extends Char {
 	public void destroy() {
 		
 		super.destroy();
-		
+
+		Dungeon.level.killMob(this);
 		Dungeon.level.mobs.remove( this );
 		
 		if (Dungeon.hero.isAlive()) {

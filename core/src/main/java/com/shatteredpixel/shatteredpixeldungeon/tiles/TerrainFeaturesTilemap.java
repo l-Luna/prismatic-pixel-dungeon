@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.puzzles.PressurePad;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.watabou.noosa.Image;
@@ -39,12 +40,14 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 
 	private SparseArray<Plant> plants;
 	private SparseArray<Trap> traps;
+	private SparseArray<PressurePad> pressurePads = new SparseArray<>();
 
-	public TerrainFeaturesTilemap(SparseArray<Plant> plants, SparseArray<Trap> traps) {
+	public TerrainFeaturesTilemap(SparseArray<Plant> plants, SparseArray<Trap> traps, SparseArray<PressurePad> pressurePads) {
 		super(Assets.Environment.TERRAIN_FEATURES);
 
 		this.plants = plants;
 		this.traps = traps;
+		this.pressurePads = pressurePads;
 
 		map( Dungeon.level.map, Dungeon.level.width() );
 
@@ -64,7 +67,12 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 			return plants.get(pos).image + 7*16;
 		}
 
-		int stage = (Dungeon.depth-1)/5;
+		if(pressurePads.get(pos) != null){
+			PressurePad pad = pressurePads.get(pos);
+			return pad.colour + ((pad.pressed ? 9 : 8)*16);
+		}
+
+		int stage = (Dungeon.depth-1)/6;
 		if (Dungeon.depth == 21 && Dungeon.level instanceof LastShopLevel) stage--;
 		if (tile == Terrain.HIGH_GRASS){
 			return 10 + 16*stage + (DungeonTileSheet.tileVariance[pos] >= 50 ? 1 : 0);

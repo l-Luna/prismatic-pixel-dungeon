@@ -138,7 +138,9 @@ public class Heap implements Bundlable {
 		} else if (sprite != null) {
 			sprite.view(this).place( pos );
 		}
-		
+
+		Dungeon.level.collectItem(item);
+
 		return item;
 	}
 	

@@ -80,7 +80,7 @@ public class Chasm implements Hero.Doom {
 				
 		Sample.INSTANCE.play( Assets.Sounds.FALLING );
 
-		Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+		Buff buff = Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
 		if (buff != null) buff.detach();
 		buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
 		if (buff != null) buff.detach();

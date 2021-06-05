@@ -53,13 +53,13 @@ public class Fadeleaf extends Plant {
 			
 			if (((Hero) ch).subClass == HeroSubClass.WARDEN){
 				
-				if (Dungeon.bossLevel()) {
+				if (Dungeon.bossOrPuzzleLevel()) {
 					GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 					return;
 					
 				}
 				
-				Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+				Buff buff = Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
 				if (buff != null) buff.detach();
 				buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
 				if (buff != null) buff.detach();
@@ -75,7 +75,7 @@ public class Fadeleaf extends Plant {
 			
 		} else if (ch instanceof Mob && !ch.properties().contains(Char.Property.IMMOVABLE)) {
 
-			if (!Dungeon.bossLevel()) {
+			if (!Dungeon.bossOrPuzzleLevel()) {
 
 				int count = 20;
 				int newPos;

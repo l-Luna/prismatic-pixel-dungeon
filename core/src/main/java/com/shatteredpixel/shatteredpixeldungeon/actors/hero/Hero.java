@@ -570,7 +570,7 @@ public class Hero extends Char {
 	@Override
 	public void spend( float time ) {
 		justMoved = false;
-		TimekeepersHourglass.timeFreeze freeze = buff(TimekeepersHourglass.timeFreeze.class);
+		TimekeepersHourglass.TimeFreeze freeze = buff(TimekeepersHourglass.TimeFreeze.class);
 		if (freeze != null) {
 			freeze.processTime(time);
 			return;
@@ -963,7 +963,7 @@ public class Hero extends Char {
 			
 			curAction = null;
 
-			Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
+			Buff buff = buff(TimekeepersHourglass.TimeFreeze.class);
 			if (buff != null) buff.detach();
 			buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
 			if (buff != null) buff.detach();
@@ -1016,7 +1016,7 @@ public class Hero extends Char {
 				
 				curAction = null;
 
-				Buff buff = buff(TimekeepersHourglass.timeFreeze.class);
+				Buff buff = buff(TimekeepersHourglass.TimeFreeze.class);
 				if (buff != null) buff.detach();
 				buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
 				if (buff != null) buff.detach();

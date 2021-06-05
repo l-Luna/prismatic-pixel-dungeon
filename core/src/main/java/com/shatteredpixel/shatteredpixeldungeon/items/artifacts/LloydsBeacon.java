@@ -111,7 +111,7 @@ public class LloydsBeacon extends Artifact {
 
 		if (action == AC_SET || action == AC_RETURN) {
 			
-			if (Dungeon.bossLevel()) {
+			if (Dungeon.bossOrPuzzleLevel()) {
 				hero.spend( LloydsBeacon.TIME_TO_USE );
 				GLog.w( Messages.get(this, "preventing") );
 				return;
@@ -177,7 +177,7 @@ public class LloydsBeacon extends Artifact {
 				GameScene.updateFog();
 			} else {
 
-				Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+				Buff buff = Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
 				if (buff != null) buff.detach();
 				buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
 				if (buff != null) buff.detach();
@@ -236,7 +236,7 @@ public class LloydsBeacon extends Artifact {
 											}
 										} while (pos == -1);
 
-										if (pos == -1 || Dungeon.bossLevel()) {
+										if (pos == -1 || Dungeon.bossOrPuzzleLevel()) {
 
 											GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 

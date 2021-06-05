@@ -147,7 +147,7 @@ public class Mimic extends Mob {
 		Dungeon.hero.sprite.operate(pos);
 		if (Dungeon.hero.invisible <= 0
 				&& Dungeon.hero.buff(Swiftthistle.TimeBubble.class) == null
-				&& Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class) == null){
+				&& Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class) == null){
 			return doAttack(Dungeon.hero);
 		} else {
 			sprite.idle();

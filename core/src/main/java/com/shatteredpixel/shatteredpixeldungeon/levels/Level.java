@@ -68,6 +68,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.HighGrass;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.puzzles.PressurePad;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -97,7 +98,7 @@ import java.util.HashSet;
 
 public abstract class Level implements Bundlable {
 	
-	public static enum Feeling {
+	public enum Feeling {
 		NONE,
 		CHASM,
 		WATER,
@@ -149,9 +150,12 @@ public abstract class Level implements Bundlable {
 	public HashMap<Class<? extends Blob>,Blob> blobs;
 	public SparseArray<Plant> plants;
 	public SparseArray<Trap> traps;
+	public SparseArray<PressurePad> pressurePads;
 	public HashSet<CustomTilemap> customTiles;
 	public HashSet<CustomTilemap> customWalls;
-	
+
+	public ArrayList<Integer> interResetData = new ArrayList<>();
+
 	protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
 	protected Group visuals;
@@ -159,29 +163,31 @@ public abstract class Level implements Bundlable {
 	public int color1 = 0x004400;
 	public int color2 = 0x88CC44;
 
-	private static final String VERSION     = "version";
-	private static final String WIDTH       = "width";
-	private static final String HEIGHT      = "height";
-	private static final String MAP			= "map";
-	private static final String VISITED		= "visited";
-	private static final String MAPPED		= "mapped";
-	private static final String ENTRANCE	= "entrance";
-	private static final String EXIT		= "exit";
-	private static final String LOCKED      = "locked";
-	private static final String HEAPS		= "heaps";
-	private static final String PLANTS		= "plants";
-	private static final String TRAPS       = "traps";
-	private static final String CUSTOM_TILES= "customTiles";
-	private static final String CUSTOM_WALLS= "customWalls";
-	private static final String MOBS		= "mobs";
-	private static final String BLOBS		= "blobs";
-	private static final String FEELING		= "feeling";
+	private static final String VERSION     	= "version";
+	private static final String WIDTH       	= "width";
+	private static final String HEIGHT      	= "height";
+	private static final String MAP				= "map";
+	private static final String VISITED			= "visited";
+	private static final String MAPPED			= "mapped";
+	private static final String ENTRANCE		= "entrance";
+	private static final String EXIT			= "exit";
+	private static final String LOCKED      	= "locked";
+	private static final String HEAPS			= "heaps";
+	private static final String PLANTS			= "plants";
+	private static final String TRAPS           = "traps";
+	private static final String PRESSUREPADS    = "pressurePads";
+	private static final String INTERRESETDATA	= "interResetData";
+	private static final String CUSTOM_TILES	= "customTiles";
+	private static final String CUSTOM_WALLS	= "customWalls";
+	private static final String MOBS			= "mobs";
+	private static final String BLOBS			= "blobs";
+	private static final String FEELING			= "feeling";
 
 	public void create() {
 
 		Random.pushGenerator( Dungeon.seedCurDepth() );
 		
-		if (!(Dungeon.bossLevel())) {
+		if (!(Dungeon.bossOrPuzzleLevel())) {
 
 			addItemToSpawn(Generator.random(Generator.Category.FOOD));
 
@@ -203,8 +209,8 @@ public abstract class Level implements Bundlable {
 			}
 			//one scroll of transmutation is guaranteed to spawn somewhere on chapter 2-4
 			int enchChapter = (int)((Dungeon.seed / 10) % 3) + 1;
-			if ( Dungeon.depth / 5 == enchChapter &&
-					Dungeon.seed % 4 + 1 == Dungeon.depth % 5){
+			if ( Dungeon.depth / 6 == enchChapter &&
+					Dungeon.seed % 4 + 1 == Dungeon.depth % 6){
 				addItemToSpawn( new StoneOfEnchantment() );
 			}
 			
@@ -252,6 +258,7 @@ public abstract class Level implements Bundlable {
 			blobs = new HashMap<>();
 			plants = new SparseArray<>();
 			traps = new SparseArray<>();
+			pressurePads = new SparseArray<>();
 			customTiles = new HashSet<>();
 			customWalls = new HashSet<>();
 			
@@ -321,6 +328,7 @@ public abstract class Level implements Bundlable {
 		blobs = new HashMap<>();
 		plants = new SparseArray<>();
 		traps = new SparseArray<>();
+		pressurePads = new SparseArray<>();
 		customTiles = new HashSet<>();
 		customWalls = new HashSet<>();
 		
@@ -351,6 +359,17 @@ public abstract class Level implements Bundlable {
 		for (Bundlable p : collection) {
 			Trap trap = (Trap)p;
 			traps.put( trap.pos, trap );
+		}
+
+		collection = bundle.getCollection(PRESSUREPADS);
+		for(Bundlable p : collection){
+			PressurePad pad = (PressurePad)p;
+			pressurePads.put(pad.pos, pad);
+		}
+
+		int[] stuff = bundle.getIntArray(INTERRESETDATA);
+		for(int p : stuff){
+			interResetData.add(p);
 		}
 
 		collection = bundle.getCollection( CUSTOM_TILES );
@@ -419,6 +438,10 @@ public abstract class Level implements Bundlable {
 		bundle.put( HEAPS, heaps.valueList() );
 		bundle.put( PLANTS, plants.valueList() );
 		bundle.put( TRAPS, traps.valueList() );
+		bundle.put( PRESSUREPADS, pressurePads.valueList() );
+			int[] nums = new int[interResetData.size()];
+			for(int i = 0; i < interResetData.size(); i++) nums[i] = interResetData.get(i);
+		bundle.put( INTERRESETDATA, nums );
 		bundle.put( CUSTOM_TILES, customTiles );
 		bundle.put( CUSTOM_WALLS, customWalls );
 		bundle.put( MOBS, mobs );
@@ -1009,8 +1032,8 @@ public abstract class Level implements Bundlable {
 
 		if (trap != null) {
 			
-			TimekeepersHourglass.timeFreeze timeFreeze =
-					Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+			TimekeepersHourglass.TimeFreeze timeFreeze =
+					Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
 			
 			Swiftthistle.TimeBubble bubble =
 					Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
@@ -1220,7 +1243,7 @@ public abstract class Level implements Bundlable {
 		return distance( a, b ) == 1;
 	}
 	
-	//uses pythagorean theorum for true distance, as if there was no movement grid
+	//uses pythagorean theorem for true distance, as if there was no movement grid
 	public float trueDistance(int a, int b){
 		int ax = a % width();
 		int ay = a / width();
@@ -1302,6 +1325,8 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "bookshelf_name");
 			case Terrain.ALCHEMY:
 				return Messages.get(Level.class, "alchemy_name");
+			case Terrain.PRESSUREPAD:
+				return Messages.get(Level.class, "pressure_pad_name");
 			default:
 				return Messages.get(Level.class, "default_name");
 		}
@@ -1339,10 +1364,18 @@ public abstract class Level implements Bundlable {
 				return Messages.get(Level.class, "statue_desc");
 			case Terrain.ALCHEMY:
 				return Messages.get(Level.class, "alchemy_desc");
+			case Terrain.PRESSUREPAD:
+				return Messages.get(Level.class, "pressure_pad_desc");
 			case Terrain.EMPTY_WELL:
 				return Messages.get(Level.class, "empty_well_desc");
 			default:
 				return "";
 		}
 	}
+
+	// Prismatic
+	public void turn(){}
+	public void setupInterResetData(){}
+	public void killMob(Mob mob){}
+	public void collectItem(Item i){}
 }

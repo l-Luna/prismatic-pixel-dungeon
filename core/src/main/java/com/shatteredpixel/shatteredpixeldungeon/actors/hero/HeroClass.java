@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
+import com.shatteredpixel.shatteredpixeldungeon.items.DebugScroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
@@ -108,8 +109,7 @@ public enum HeroClass {
 		new ScrollOfIdentify().identify();
 
 		if (SPDSettings.creative()){
-			new ChainWhip().identify().collect();
-			new ScrollOfUpgrade().quantity(100).identify().collect();
+			new DebugScroll().identify().collect();
 		}
 	}
 

@@ -827,7 +827,7 @@ public class DriedRose extends Artifact {
 		}
 		
 		public void sayHeroKilled(){
-			if (Dungeon.bossLevel()){
+			if (Dungeon.bossOrPuzzleLevel()){
 				yell( Messages.get( this, "hero_killed_boss_" + Random.IntRange(1, 3) ));
 			} else {
 				yell( Messages.get( this, "hero_killed_" + Random.IntRange(1, 3) ));

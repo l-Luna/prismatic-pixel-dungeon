@@ -363,7 +363,7 @@ public class InterlevelScene extends PixelScene {
 		}
 
 		Level level;
-		if (Dungeon.depth >= Statistics.deepestFloor) {
+		if (!Dungeon.generatedLevels[Dungeon.depth + 1]) {
 			level = Dungeon.newLevel();
 		} else {
 			Dungeon.depth++;
@@ -380,7 +380,7 @@ public class InterlevelScene extends PixelScene {
 		Dungeon.saveAll();
 
 		Level level;
-		if (Dungeon.depth >= Statistics.deepestFloor) {
+		if (!Dungeon.generatedLevels[Dungeon.depth + 1]) {
 			level = Dungeon.newLevel();
 		} else {
 			Dungeon.depth++;
@@ -394,8 +394,15 @@ public class InterlevelScene extends PixelScene {
 		Mob.holdAllies( Dungeon.level );
 
 		Dungeon.saveAll();
-		Dungeon.depth--;
-		Level level = Dungeon.loadLevel( GamesInProgress.curSlot );
+
+		Level level;
+		if (!Dungeon.generatedLevels[Dungeon.depth - 1]) {
+			Dungeon.depth -= 2;
+			level = Dungeon.newLevel();
+		} else {
+			Dungeon.depth--;
+			level = Dungeon.loadLevel( GamesInProgress.curSlot );
+		}
 		Dungeon.switchLevel( level, level.exit );
 	}
 	
@@ -405,7 +412,15 @@ public class InterlevelScene extends PixelScene {
 
 		Dungeon.saveAll();
 		Dungeon.depth = returnDepth;
-		Level level = Dungeon.loadLevel( GamesInProgress.curSlot );
+		Level level;
+
+		if (!Dungeon.generatedLevels[returnDepth]){
+			Dungeon.depth--;
+			level = Dungeon.newLevel();
+		} else {
+			level = Dungeon.loadLevel( GamesInProgress.curSlot );
+		}
+
 		Dungeon.switchLevel( level, returnPos );
 	}
 	
@@ -425,7 +440,7 @@ public class InterlevelScene extends PixelScene {
 		}
 	}
 	
-	private void resurrect() throws IOException {
+	private void resurrect() {
 		
 		Mob.holdAllies( Dungeon.level );
 		
@@ -440,14 +455,14 @@ public class InterlevelScene extends PixelScene {
 		}
 	}
 
-	private void reset() throws IOException {
+	private void reset() {
 		
 		Mob.holdAllies( Dungeon.level );
 
-		SpecialRoom.resetPitRoom(Dungeon.depth+1);
+		SpecialRoom.resetPitRoom(Dungeon.depth + 1);
 
 		Dungeon.depth--;
-		Level level = Dungeon.newLevel();
+		Level level = Dungeon.newLevel(true, Dungeon.level.interResetData);
 		Dungeon.switchLevel( level, level.entrance );
 	}
 	

@@ -63,7 +63,7 @@ public class TeleportationTrap extends Trap {
 					}
 				} while (pos == -1 || Dungeon.level.secret[pos]);
 				
-				if (pos == -1 || Dungeon.bossLevel()) {
+				if (pos == -1 || Dungeon.bossOrPuzzleLevel()) {
 					
 					GLog.w(Messages.get(ScrollOfTeleportation.class, "no_tele"));
 					

@@ -45,19 +45,22 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CavesPuzzleLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.CityPuzzleLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.DeadEndLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.HallsLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.LastLevel;
-import com.shatteredpixel.shatteredpixeldungeon.levels.LastShopLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewCavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewCityBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewHallsBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.NewPrisonBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonPuzzleLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.SewerPuzzleLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -75,7 +78,9 @@ import com.watabou.utils.SparseArray;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 public class Dungeon {
 
@@ -168,6 +173,9 @@ public class Dungeon {
 	public static int version;
 
 	public static long seed;
+	public static boolean[] generatedLevels;
+
+	private static final List<Integer> noKillingLevels = Arrays.asList(3, 6, 9, 12, 15, 18, 21, 24, 29, 30);
 	
 	public static void init() {
 
@@ -190,6 +198,7 @@ public class Dungeon {
 			SecretRoom.initForRun();
 
 		Random.resetGenerators();
+		generatedLevels = new boolean[200];
 		
 		Statistics.reset();
 		Notes.reset();
@@ -224,8 +233,12 @@ public class Dungeon {
 	public static boolean isChallenged( int mask ) {
 		return (challenges & mask) != 0;
 	}
-	
-	public static Level newLevel() {
+
+	public static Level newLevel(){
+		return newLevel(false, null);
+	}
+
+	public static Level newLevel(boolean resetting, ArrayList<Integer> interResetData){
 		
 		Dungeon.level = null;
 		Actor.clear();
@@ -245,74 +258,77 @@ public class Dungeon {
 		switch (depth) {
 		case 1:
 		case 2:
-		case 3:
 		case 4:
+		case 5:
 			level = new SewerLevel();
 			break;
-		case 5:
-			level = new SewerBossLevel();
+		case 3:
+			level = new SewerPuzzleLevel();
 			break;
 		case 6:
+			level = new SewerBossLevel();
+			break;
 		case 7:
 		case 8:
-		case 9:
+		case 10:
+		case 11:
 			level = new PrisonLevel();
 			break;
-		case 10:
+		case 9:
+			level = new PrisonPuzzleLevel();
+			break;
+		case 12:
 			level = new NewPrisonBossLevel();
 			break;
-		case 11:
-		case 12:
 		case 13:
 		case 14:
+		case 16:
+		case 17:
 			level = new CavesLevel();
 			break;
 		case 15:
+			level = new CavesPuzzleLevel();
+			break;
+		case 18:
 			level = new NewCavesBossLevel();
 			break;
-		case 16:
-		case 17:
-		case 18:
 		case 19:
-			level = new CityLevel();
-			break;
 		case 20:
-			level = new NewCityBossLevel();
-			break;
-		case 21:
-			//logic for old city boss levels, need to spawn a shop on floor 21
-			try {
-				Bundle bundle = FileUtils.bundleFromFile(GamesInProgress.depthFile(GamesInProgress.curSlot, 20));
-				Class cls = bundle.getBundle(LEVEL).getClass("__className");
-				if (cls == NewCityBossLevel.class) {
-					level = new HallsLevel();
-				} else {
-					level = new LastShopLevel();
-				}
-			} catch (Exception e) {
-				ShatteredPixelDungeon.reportException(e);
-				level = new HallsLevel();
-			}
-			break;
 		case 22:
 		case 23:
+			level = new CityLevel();
+			break;
+		case 21:
+			level = new CityPuzzleLevel();
+			break;
 		case 24:
-			level = new HallsLevel();
+			level = new NewCityBossLevel();
 			break;
 		case 25:
+		case 26:
+		case 27:
+		case 28:
+			level = new HallsLevel();
+			break;
+		case 29:
 			level = new NewHallsBossLevel();
 			break;
-		case 26:
+		case 30:
 			level = new LastLevel();
 			break;
 		default:
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
 		}
-		
+
+		if (!resetting) {
+			level.setupInterResetData();
+		} else level.interResetData = interResetData;
+
 		level.create();
 		
-		Statistics.qualifiedForNoKilling = !bossLevel();
+		Statistics.qualifiedForNoKilling = !bossOrPuzzleLevel();
+		generatedLevels[depth] = true;
 		
 		return level;
 	}
@@ -342,15 +358,15 @@ public class Dungeon {
 	}
 	
 	public static boolean shopOnLevel() {
-		return depth == 6 || depth == 11 || depth == 16;
+		return depth == 7 || depth == 13 || depth == 19;
 	}
 	
-	public static boolean bossLevel() {
-		return bossLevel( depth );
+	public static boolean bossOrPuzzleLevel() {
+		return bossOrPuzzleLevel( depth );
 	}
 	
-	public static boolean bossLevel( int depth ) {
-		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
+	public static boolean bossOrPuzzleLevel(int depth) {
+		return noKillingLevels.contains(depth);
 	}
 	
 	public static void switchLevel( final Level level, int pos ) {
@@ -409,10 +425,10 @@ public class Dungeon {
 
 	public static boolean posNeeded() {
 		//2 POS each floor set
-		int posLeftThisSet = 2 - (LimitedDrops.STRENGTH_POTIONS.count - (depth / 5) * 2);
+		int posLeftThisSet = 2 - (LimitedDrops.STRENGTH_POTIONS.count - (depth / 6) * 2);
 		if (posLeftThisSet <= 0) return false;
 
-		int floorThisSet = (depth % 5);
+		int floorThisSet = (depth % 6);
 
 		//pos drops every two floors, (numbers 1-2, and 3-4) with a 50% chance for the earlier one each time.
 		int targetPOSLeft = 2 - floorThisSet/2;
@@ -427,23 +443,23 @@ public class Dungeon {
 		int souLeftThisSet;
 		//3 SOU each floor set, 1.5 (rounded) on forbidden runes challenge
 		if (isChallenged(Challenges.NO_SCROLLS)){
-			souLeftThisSet = Math.round(1.5f - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 5) * 1.5f));
+			souLeftThisSet = Math.round(1.5f - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 6) * 1.5f));
 		} else {
-			souLeftThisSet = 3 - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 5) * 3);
+			souLeftThisSet = 3 - (LimitedDrops.UPGRADE_SCROLLS.count - (depth / 6) * 3);
 		}
 		if (souLeftThisSet <= 0) return false;
 
-		int floorThisSet = (depth % 5);
+		int floorThisSet = (depth % 6);
 		//chance is floors left / scrolls left
 		return Random.Int(5 - floorThisSet) < souLeftThisSet;
 	}
 	
 	public static boolean asNeeded() {
 		//1 AS each floor set
-		int asLeftThisSet = 1 - (LimitedDrops.ARCANE_STYLI.count - (depth / 5));
+		int asLeftThisSet = 1 - (LimitedDrops.ARCANE_STYLI.count - (depth / 6));
 		if (asLeftThisSet <= 0) return false;
 
-		int floorThisSet = (depth % 5);
+		int floorThisSet = (depth % 6);
 		//chance is floors left / scrolls left
 		return Random.Int(5 - floorThisSet) < asLeftThisSet;
 	}
@@ -455,6 +471,7 @@ public class Dungeon {
 	private static final String HERO		= "hero";
 	private static final String GOLD		= "gold";
 	private static final String DEPTH		= "depth";
+	private static final String GENERATEDLEVELS		= "generatedLevels";
 	private static final String DROPPED     = "dropped%d";
 	private static final String PORTED      = "ported%d";
 	private static final String LEVEL		= "level";
@@ -475,6 +492,7 @@ public class Dungeon {
 			bundle.put( HERO, hero );
 			bundle.put( GOLD, gold );
 			bundle.put( DEPTH, depth );
+			bundle.put(GENERATEDLEVELS, generatedLevels);
 
 			for (int d : droppedItems.keyArray()) {
 				bundle.put(Messages.format(DROPPED, d), droppedItems.get(d));
@@ -620,6 +638,7 @@ public class Dungeon {
 		
 		gold = bundle.getInt( GOLD );
 		depth = bundle.getInt( DEPTH );
+		generatedLevels = bundle.getBooleanArray(GENERATEDLEVELS);
 		
 		Statistics.restoreFromBundle( bundle );
 		Generator.restoreFromBundle( bundle );

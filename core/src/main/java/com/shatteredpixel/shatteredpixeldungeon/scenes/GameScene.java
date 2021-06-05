@@ -229,7 +229,7 @@ public class GameScene extends PixelScene {
 		visualGrid = new GridTileMap();
 		terrain.add( visualGrid );
 
-		terrainFeatures = new TerrainFeaturesTilemap(Dungeon.level.plants, Dungeon.level.traps);
+		terrainFeatures = new TerrainFeaturesTilemap(Dungeon.level.plants, Dungeon.level.traps, Dungeon.level.pressurePads);
 		terrain.add(terrainFeatures);
 		
 		levelVisuals = Dungeon.level.addVisuals();
@@ -370,16 +370,16 @@ public class GameScene extends PixelScene {
 			case 1:
 				WndStory.showChapter( WndStory.ID_SEWERS );
 				break;
-			case 6:
+			case 7:
 				WndStory.showChapter( WndStory.ID_PRISON );
 				break;
-			case 11:
+			case 13:
 				WndStory.showChapter( WndStory.ID_CAVES );
 				break;
-			case 16:
+			case 19:
 				WndStory.showChapter( WndStory.ID_CITY );
 				break;
-			case 21:
+			case 25:
 				WndStory.showChapter( WndStory.ID_HALLS );
 				break;
 			}
@@ -461,7 +461,7 @@ public class GameScene extends PixelScene {
 					}
 
 					if (spawnersAbove > 0) {
-						if (Dungeon.bossLevel()) {
+						if (Dungeon.bossOrPuzzleLevel()) {
 							GLog.n(Messages.get(this, "spawner_warn_final"));
 						} else {
 							GLog.n(Messages.get(this, "spawner_warn"));
@@ -600,19 +600,14 @@ public class GameScene extends PixelScene {
 		if (!Actor.processing() && Dungeon.hero.isAlive()) {
 			if (actorThread == null || !actorThread.isAlive()) {
 				
-				actorThread = new Thread() {
-					@Override
-					public void run() {
-						Actor.process();
-					}
-				};
+				actorThread = new Thread(Actor::process);
 				
 				//if cpu cores are limited, game should prefer drawing the current frame
 				if (Runtime.getRuntime().availableProcessors() == 1) {
 					actorThread.setPriority(Thread.NORM_PRIORITY - 1);
 				}
-				actorThread.setName("SHPD Actor Thread");
-				Thread.currentThread().setName("SHPD Render Thread");
+				actorThread.setName("PrPD Actor Thread");
+				Thread.currentThread().setName("PrPD Render Thread");
 				Actor.keepActorThreadAlive = true;
 				actorThread.start();
 			} else {
@@ -622,6 +617,7 @@ public class GameScene extends PixelScene {
 			}
 		}
 
+		Dungeon.level.turn();
 		counter.setSweep((1f - Actor.now()%1f)%1f);
 		
 		if (Dungeon.hero.ready && Dungeon.hero.paralysed == 0) {

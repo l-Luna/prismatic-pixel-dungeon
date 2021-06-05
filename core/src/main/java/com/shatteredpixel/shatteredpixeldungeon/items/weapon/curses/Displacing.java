@@ -48,7 +48,7 @@ public class Displacing extends Weapon.Enchantment {
 				}
 			} while (newPos == -1 || Dungeon.level.secret[newPos]);
 
-			if (newPos != -1 && !Dungeon.bossLevel()) {
+			if (newPos != -1 && !Dungeon.bossOrPuzzleLevel()) {
 
 				if (Dungeon.level.heroFOV[defender.pos]) {
 					CellEmitter.get( defender.pos ).start( Speck.factory( Speck.LIGHT ), 0.2f, 3 );

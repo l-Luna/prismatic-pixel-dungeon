@@ -59,7 +59,7 @@ public class ScrollOfTeleportation extends Scroll {
 		teleportPreferringUnseen( curUser );
 		identify();
 
-		if (!Dungeon.bossLevel()) {
+		if (!Dungeon.bossOrPuzzleLevel()) {
 			readAnimation();
 		}
 	}
@@ -86,7 +86,7 @@ public class ScrollOfTeleportation extends Scroll {
 	
 	public static void teleportChar( Char ch ) {
 
-		if (Dungeon.bossLevel()){
+		if (Dungeon.bossOrPuzzleLevel()){
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 			return;
 		}
@@ -121,7 +121,7 @@ public class ScrollOfTeleportation extends Scroll {
 	
 	public static void teleportPreferringUnseen( Hero hero ){
 		
-		if (Dungeon.bossLevel() || !(Dungeon.level instanceof RegularLevel)){
+		if (Dungeon.bossOrPuzzleLevel() || !(Dungeon.level instanceof RegularLevel)){
 			teleportHero( hero );
 			return;
 		}

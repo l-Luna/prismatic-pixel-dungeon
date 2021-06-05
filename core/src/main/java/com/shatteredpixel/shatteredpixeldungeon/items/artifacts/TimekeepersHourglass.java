@@ -108,10 +108,10 @@ public class TimekeepersHourglass extends Artifact {
 									GameScene.flash(0x80FFFFFF);
 									Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 
-									activeBuff = new timeFreeze();
+									activeBuff = new TimeFreeze();
 									Talent.onArtifactUsed(Dungeon.hero);
 									activeBuff.attachTo(Dungeon.hero);
-									((timeFreeze)activeBuff).processTime(0f);
+									((TimeFreeze)activeBuff).processTime(0f);
 								}
 							}
 						}
@@ -203,8 +203,8 @@ public class TimekeepersHourglass extends Artifact {
 		if (bundle.contains( BUFF )){
 			Bundle buffBundle = bundle.getBundle( BUFF );
 
-			if (buffBundle.contains( timeFreeze.PRESSES ))
-				activeBuff = new timeFreeze();
+			if (buffBundle.contains( TimeFreeze.PRESSES ))
+				activeBuff = new TimeFreeze();
 			else
 				activeBuff = new timeStasis();
 
@@ -299,7 +299,7 @@ public class TimekeepersHourglass extends Artifact {
 		}
 	}
 
-	public class timeFreeze extends ArtifactBuff {
+	public class TimeFreeze extends ArtifactBuff {
 		
 		{
 			type = buffType.POSITIVE;

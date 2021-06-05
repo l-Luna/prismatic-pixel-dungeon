@@ -43,14 +43,14 @@ public class ScrollOfPassage extends ExoticScroll {
 
 		identify();
 		
-		if (Dungeon.bossLevel()) {
+		if (Dungeon.bossOrPuzzleLevel()) {
 			
 			GLog.w( Messages.get(ScrollOfTeleportation.class, "no_tele") );
 			return;
 			
 		}
 		
-		Buff buff = Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class);
+		Buff buff = Dungeon.hero.buff(TimekeepersHourglass.TimeFreeze.class);
 		if (buff != null) buff.detach();
 		buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
 		if (buff != null) buff.detach();
