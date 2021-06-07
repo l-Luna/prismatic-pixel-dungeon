@@ -43,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfPrismaticLight;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfTransfusion;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
@@ -78,6 +79,7 @@ public class AntiMagic extends Armor.Glyph {
 		RESISTS.add( WandOfPrismaticLight.class );
 		RESISTS.add( WandOfTransfusion.class );
 		RESISTS.add( WandOfWarding.Ward.class );
+		RESISTS.add( WandOfSapping.class );
 		
 		RESISTS.add( DM100.LightningBolt.class );
 		RESISTS.add( Shaman.EarthenBolt.class );
