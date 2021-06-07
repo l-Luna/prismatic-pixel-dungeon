@@ -40,12 +40,12 @@ public class WandOfSapping extends DamageWand{
 	}
 	
 	@Override
-	protected void onZap(Ballistica attack){
+	public void onZap(Ballistica attack){
 		int cell = attack.collisionPos;
 		
 		Char ch = Actor.findChar(cell);
 		if(ch != null){
-			processSoulMark(ch, chargesPerCast());
+			wandProc(ch, chargesPerCast());
 			int damageAmount = damageRoll();
 			ch.damage(damageAmount, this);
 			Buff.affect(curUser, Healing.class).setHeal((int)(0.5 * damageAmount), 0.333f, 0);
@@ -86,7 +86,7 @@ public class WandOfSapping extends DamageWand{
 		particle.speed.polar(amt + PointF.PI, 2.5f);
 	}
 	
-	protected void fx(Ballistica bolt, Callback callback){
+	public void fx(Ballistica bolt, Callback callback){
 		MagicMissile missile = ((MagicMissile)curUser.sprite.parent.recycle(MagicMissile.class));
 		missile.reset(MagicMissile.MAGIC_MISSILE, DungeonTilemap.raisedTileCenterToWorld(bolt.collisionPos), curUser.sprite.center(), callback);
 		Sample.INSTANCE.play(Assets.Sounds.ZAP);
