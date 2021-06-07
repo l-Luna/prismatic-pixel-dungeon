@@ -9,6 +9,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLevitation
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfChanneling;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfSapping;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
@@ -55,7 +56,7 @@ public class DebugScroll extends Item {
                                 boolean shouldMax = true;
                                 switch(itemToGive){
                                     case 1:
-                                        i = new WandOfSapping();
+                                        i = new WandOfChanneling();
                                         shouldMax = false;
                                         break;
                                     case 2:
