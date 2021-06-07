@@ -63,7 +63,7 @@ public class WandOfSapping extends DamageWand{
 			else if(ch.properties().contains(Char.Property.ELECTRIC))
 				Buff.affect(curUser, Paralysis.class, 1f);
 			else
-				Buff.affect(curUser, Charm.class, Math.max(3, 8 - level())).object = ch.id();
+				Buff.affect(curUser, Charm.class, Math.max(2, 5 - level())).object = ch.id();
 		}else
 			Dungeon.level.pressCell(attack.collisionPos);
 	}
