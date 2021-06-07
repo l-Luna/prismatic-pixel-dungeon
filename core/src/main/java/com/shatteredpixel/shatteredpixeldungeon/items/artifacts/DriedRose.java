@@ -767,10 +767,10 @@ public class DriedRose extends Artifact {
 		}
 		
 		public void sayAppeared(){
-			int depth = (Dungeon.depth - 1) / 5;
+			int depth = (Dungeon.depth - 1) / 6;
 			
 			//only some lines are said on the first floor of a depth
-			int variant = Dungeon.depth % 5 == 1 ? Random.IntRange(1, 3) : Random.IntRange(1, 6);
+			int variant = Dungeon.depth % 6 == 1 ? Random.IntRange(1, 3) : Random.IntRange(1, 6);
 			
 			switch(depth){
 				case 0:
@@ -795,7 +795,7 @@ public class DriedRose extends Artifact {
 		}
 		
 		public void sayBoss(){
-			int depth = (Dungeon.depth - 1) / 5;
+			int depth = (Dungeon.depth - 1) / 6;
 			
 			switch(depth){
 				case 0:

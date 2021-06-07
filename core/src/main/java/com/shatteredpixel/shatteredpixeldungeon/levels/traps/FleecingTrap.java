@@ -61,10 +61,10 @@ public class FleecingTrap extends Trap{
                     EquipableItem i = hero.belongings.armor;
                     i.doUnequip(hero, false, true);
                     Dungeon.level.drop(i.detachAll(hero.belongings.backpack), Dungeon.level.exit).sprite.drop(Dungeon.level.exit);
-                    GLog.w( Messages.get(this, "movearmour"));
+                    GLog.w( Messages.get(this, "move_armour"));
                 }else{
                     hero.belongings.armor.detachAll(hero.belongings.backpack);
-                    GLog.w( Messages.get(this, "destroyarmour"));
+                    GLog.w( Messages.get(this, "destroy_armour"));
                 }
                 //Teleport to start of stage
             }else{
@@ -73,6 +73,7 @@ public class FleecingTrap extends Trap{
                 buff = Dungeon.hero.buff(Swiftthistle.TimeBubble.class);
                 if (buff != null) buff.detach();
 
+                GLog.w( Messages.get(this, "return_to_start"));
                 InterlevelScene.mode = InterlevelScene.Mode.RETURN;
                 InterlevelScene.returnDepth = (Dungeon.depth / 6) * 6 + 1;
                 InterlevelScene.returnPos = -1;
