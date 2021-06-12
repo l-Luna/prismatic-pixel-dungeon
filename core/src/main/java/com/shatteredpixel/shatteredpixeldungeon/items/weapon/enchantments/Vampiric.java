@@ -38,7 +38,7 @@ public class Vampiric extends Weapon.Enchantment {
 		
 		//chance to heal scales from 5%-30% based on missing HP
 		float missingPercent = (attacker.HT - attacker.HP) / (float)attacker.HT;
-		float healChance = 0.05f + .25f*missingPercent;
+		float healChance = 0.05f + .25f * missingPercent;
 
 		healChance *= procChanceMultiplier(attacker);
 		

@@ -51,11 +51,13 @@ public class WandOfChanneling extends Wand{
 	
 	@Override
 	public void onHit(MagesStaff staff, Char attacker, Char defender, int damage){
-		for(Buff buff : getMobEffectsBuffs())
-			if(buff instanceof FlavourBuff)
-				Buff.affect(defender, ((FlavourBuff)buff).getClass(), 3 + level());
-			else
-				Buff.affect(defender, buff.getClass());
+		// flat 10% chance
+		if(Random.Float() < 0.1f)
+			for(Buff buff : getMobEffectsBuffs())
+				if(buff instanceof FlavourBuff)
+					Buff.affect(defender, ((FlavourBuff)buff).getClass(), 1 + level());
+				else
+					Buff.affect(defender, buff.getClass());
 	}
 	
 	@Override
@@ -129,10 +131,9 @@ public class WandOfChanneling extends Wand{
 			return new ArrayList<>();
 		HashSet<Buff> f = Dungeon.hero.buffs();
 		ArrayList<Buff> negativeBuffs = new ArrayList<>();
-		for(Buff b : f){
+		for(Buff b : f)
 			if(b != null && b.type == Buff.buffType.NEGATIVE)
 				negativeBuffs.add(b);
-		}
 		if(negativeBuffs.size() == 0)
 			return new ArrayList<>();
 		else{
