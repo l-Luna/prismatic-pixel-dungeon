@@ -5,6 +5,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfAwareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WaterOfHealth;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.WellWater;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RingStatue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Sheep;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
@@ -155,13 +156,13 @@ public class CavesPuzzleLevel extends PuzzleLevel{
         }
 
         if(interResetData.get(1) == 0){
-            firstStatue = new Statue();
+            firstStatue = new RingStatue();
             firstStatue.pos = 43 + 5 * width;
             mobs.add(firstStatue);
         }
 
         if(interResetData.get(2) == 0){
-            secondStatue = new Statue();
+            secondStatue = new RingStatue();
             secondStatue.pos = 5 + 5 * width;
             mobs.add(secondStatue);
         }
